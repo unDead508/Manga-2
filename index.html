@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Manga Library</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00d8ff;
+    }
+
+    #searchBar {
+      display: block;
+      margin: 0 auto 30px;
+      padding: 12px 16px;
+      width: 300px;
+      max-width: 90%;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      background-color: #222;
+      color: white;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
+
+    #searchBar::placeholder {
+      color: #aaa;
+    }
+
+    #manga-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      padding: 0 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .manga-card {
+      background-color: #222;
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .manga-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 15px rgba(0,0,0,0.7);
+    }
+
+    .manga-card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .manga-card h3 {
+      margin: 15px 0 10px;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .manga-card a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: #00d8ff;
+      color: #111;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background-color 0.2s ease;
+    }
+
+    .manga-card a:hover {
+      background-color: #00bcd4;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Manga Library</h1>
+  <input type="text" id="searchBar" placeholder="Search manga...">
+  <div id="manga-list"></div>
+
+  <script src="Manga_list.js"></script>
+  <script>
+    const container = document.getElementById('manga-list');
+    const searchBar = document.getElementById('searchBar');
+
+    // Render cards
+    mangaList.forEach(manga => {
+      const div = document.createElement('div');
+      div.className = "manga-card";
+      div.setAttribute("data-name", manga.name.toLowerCase());
+      div.innerHTML = `
+        <img src="${manga.cover}" alt="${manga.name} cover">
+        <h3>${manga.name}</h3>
+        <a href="${manga.folder}/index.html">Read</a>
+      `;
+      container.appendChild(div);
+    });
+
+    // Live search
+    searchBar.addEventListener("input", () => {
+      const query = searchBar.value.toLowerCase();
+      const cards = document.querySelectorAll(".manga-card");
+
+      cards.forEach(card => {
+        const name = card.getAttribute("data-name");
+        card.classList.toggle("hidden", !name.includes(query));
+      });
+    });
+  </script>
+
+</body>
+</html>
